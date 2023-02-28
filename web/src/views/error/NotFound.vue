@@ -1,6 +1,6 @@
 <template>
   <ContentField>
-    404 Not Found!
+    Opps, there's nothing here
   </ContentField>
 </template>
 

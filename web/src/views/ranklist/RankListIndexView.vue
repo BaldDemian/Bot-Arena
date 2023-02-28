@@ -5,7 +5,6 @@
 </template>
 
 <script>
-
 import ContentField from "@/components/ContentField.vue";
 
 export default {
