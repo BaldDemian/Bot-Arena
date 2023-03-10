@@ -8,11 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * CorsConfig.class<br/>
  * Used as a SprintBoot configuration to handle the <b>CORS</b> problem<br/>
  * implement the Filter interface<br/>
- * Author: Unknown<br/>
- * Date: 2023-02-24<br/>
  */
 @Configuration
 public class CorsConfig implements Filter {
