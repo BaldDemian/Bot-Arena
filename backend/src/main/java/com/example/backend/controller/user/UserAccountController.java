@@ -35,7 +35,7 @@ public class UserAccountController {
         return registerService.register(name, password, confirmedPassword, photo);
     }
 
-    @PostMapping("/user/account/info/")
+    @GetMapping("/user/account/info/")
     public Map<String, String> getInfoByToken() {
         return infoService.getInfo();
     }

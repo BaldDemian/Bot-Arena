@@ -16,18 +16,31 @@
       </ul>
 
       <!--rightmost menu-->
-      <ul class="navbar-nav">
+      <ul class="navbar-nav" v-if="$store.state.user.logged">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            hpy
+            {{$store.state.user.name}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
               <router-link class="dropdown-item" :to="{name: 'user_bot_index'}">My Bot</router-link>
             </li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Log Out</a></li>
+            <li><a class="dropdown-item" href="#" @click.prevent="logout">Log Out</a></li>
           </ul>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav" v-else>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{name: 'user_account_login'}" role="button">
+            Login
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{name: 'user_account_register'}" role="button">
+            Register
+          </router-link>
         </li>
       </ul>
 
@@ -38,13 +51,20 @@
 
 <script>
 import {useRoute} from "vue-router";
-import {computed} from "vue"; // real-time compute
+import {computed} from "vue";
+import {useStore} from "vuex";
+
 export default {
-  setup() { // this function will be called when this page is set up
-    const route = useRoute() // get current route and highlight it
+  setup() {
+    const route = useRoute()
+    const store = useStore()
     let routeName = computed(() => route.name)
+    const logout = () => {
+      store.dispatch("logout") // no payload
+    }
     return {
-      routeName
+      routeName,
+      logout,
     }
   }
 }
