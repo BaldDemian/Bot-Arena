@@ -30,8 +30,7 @@
           </ul>
         </li>
       </ul>
-
-      <ul class="navbar-nav" v-else>
+      <ul class="navbar-nav" v-else-if="!$store.state.user.pulling">
         <li class="nav-item">
           <router-link class="nav-link" :to="{name: 'user_account_login'}" role="button">
             Login
@@ -53,6 +52,7 @@
 import {useRoute} from "vue-router";
 import {computed} from "vue";
 import {useStore} from "vuex";
+import router from "@/router";
 
 export default {
   setup() {
@@ -61,6 +61,7 @@ export default {
     let routeName = computed(() => route.name)
     const logout = () => {
       store.dispatch("logout") // no payload
+      router.push({name: "user_account_login"})
     }
     return {
       routeName,

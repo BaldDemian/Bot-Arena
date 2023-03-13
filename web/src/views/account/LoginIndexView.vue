@@ -1,5 +1,5 @@
 <template>
-  <ContentField>
+  <ContentField v-if="!$store.state.user.pulling">
     Login
     <hr>
      <div class="row justify-content-md-center">
@@ -40,6 +40,23 @@ export default {
     let password = ref('');
     let msg = ref('');
 
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      store.commit("updateToken", jwt);
+      // check if this local jwt is valid
+      store.dispatch("getInfo", {
+        success() {
+          router.push({name: "home"})
+          store.commit("updatePulling", false)
+        },
+        error() {
+          store.commit("updatePulling", false)
+        }
+      })
+    } else {
+      store.commit("updatePulling", false)
+    }
+
     const login = () => {
       msg.value = "";
       store.dispatch("login", {
@@ -51,7 +68,7 @@ export default {
           store.dispatch("getInfo", {
             success() {
               router.push({name: "home"});
-              console.log(store.state.user)
+              //console.log(store.state.user)
             },
           })
         },

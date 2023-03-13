@@ -7,10 +7,13 @@ export default {
         photo: "",
         jwt: "",
         logged: false,
+        pulling: true
     },
     getters: {
 
     },
+    // commit
+    // sync methods
     mutations: {
         updateUser(state, user) {
             state.id = user.id
@@ -28,8 +31,13 @@ export default {
             state.photo = ""
             state.jwt = ""
             state.logged = false
+        },
+        updatePulling(state, pulling) {
+            state.pulling = pulling
         }
     },
+    // dispatch.
+    // Async methods can only be put in actions
     actions: {
         login(context, data) {
             $.ajax({
@@ -41,6 +49,7 @@ export default {
                 },
                 success(resp) {
                     if (resp.msg === "success") {
+                        localStorage.setItem("jwt", resp.jwt)
                         context.commit("updateToken", resp.jwt)
                         data.success(resp)
                     } else {
@@ -85,7 +94,31 @@ export default {
         },
 
         logout(context) {
+            localStorage.removeItem("jwt")
             context.commit("logout")
+        },
+
+        register(context, data) {
+            $.ajax({
+                url: "http://localhost:3000/user/account/register/",
+                type: "post",
+                data: {
+                    name: data.name,
+                    password: data.password,
+                    confirmedPassword: data.confirmedPassword,
+                },
+                success(resp) {
+                    if (resp.code === "100") {
+                        //console.log("success!");
+                        data.success()
+                    } else {
+                        data.error(resp);
+                    }
+                },
+                error(resp) {
+                    data.error(resp);
+                }
+            })
         }
 
     },
